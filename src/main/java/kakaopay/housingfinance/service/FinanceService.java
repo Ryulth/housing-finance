@@ -18,8 +18,6 @@ public class FinanceService {
 
     public Map<String,Object> getFinanceStatus(){
         List<BankFinance> bankFinances = bankFinanceRepository.findAll();
-
-
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("name","주택금융 공급현황");
         return resultMap;
