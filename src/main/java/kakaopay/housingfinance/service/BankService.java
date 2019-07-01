@@ -34,5 +34,5 @@ public class BankService {
         return resultMap;
     }
 
-    
+
 }

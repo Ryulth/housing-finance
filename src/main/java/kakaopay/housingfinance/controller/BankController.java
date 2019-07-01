@@ -27,4 +27,5 @@ public class BankController {
     public ResponseEntity<Map<String,Object>> getAllBanks(){
         return new ResponseEntity<>(bankService.getAllBanks(),httpHeaders, HttpStatus.OK);
     }
+
 }
