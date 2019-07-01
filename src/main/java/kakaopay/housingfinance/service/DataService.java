@@ -3,9 +3,9 @@ package kakaopay.housingfinance.service;
 import kakaopay.housingfinance.converter.FileConverter;
 import kakaopay.housingfinance.converter.ObjectConverter;
 import kakaopay.housingfinance.entity.Bank;
-import kakaopay.housingfinance.entity.SupplyStatus;
+import kakaopay.housingfinance.entity.BankFinance;
 import kakaopay.housingfinance.repository.BankRepository;
-import kakaopay.housingfinance.repository.SupplyStatusRepository;
+import kakaopay.housingfinance.repository.BankFinanceRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,12 +17,13 @@ public class DataService implements CommandLineRunner {
     private final FileConverter fileConverter;
     private final ObjectConverter objectConverter;
     private final BankRepository bankRepository;
-    private final SupplyStatusRepository supplyStatusRepository;
-    public DataService(FileConverter fileConverter, ObjectConverter objectConverter, BankRepository bankRepository, SupplyStatusRepository supplyStatusRepository) {
+    private final BankFinanceRepository bankFinanceRepository;
+
+    public DataService(FileConverter fileConverter, ObjectConverter objectConverter, BankRepository bankRepository, BankFinanceRepository bankFinanceRepository) {
         this.fileConverter = fileConverter;
         this.objectConverter = objectConverter;
         this.bankRepository = bankRepository;
-        this.supplyStatusRepository = supplyStatusRepository;
+        this.bankFinanceRepository = bankFinanceRepository;
     }
 
     @Override
@@ -36,8 +37,8 @@ public class DataService implements CommandLineRunner {
         List<String> columnNames = rowData.remove(0);
         List<Bank> banks = objectConverter.bankListMapper(columnNames);
         bankRepository.saveAll(banks);
-        List<SupplyStatus> supplyStatuses = objectConverter.supplyStatusListMapper(rowData,banks);
-        supplyStatusRepository.saveAll(supplyStatuses);
+        List<BankFinance> bankFinances = objectConverter.bankFinanceListMapper(rowData,banks);
+        bankFinanceRepository.saveAll(bankFinances);
     }
 
 

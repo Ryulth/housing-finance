@@ -11,12 +11,14 @@ import javax.persistence.*;
 @Getter
 @Builder
 @AllArgsConstructor()
-@Table(name = "supply_status")
+@Table(name = "bank_finance")
 @ToString
-public class SupplyStatus {
+public class BankFinance {
+    protected BankFinance(){}
+
     @Id
     @GeneratedValue
-    @Column(name = "supply_status_id")
+    @Column(name = "bank_finance_id")
     private Long id;
 
     @Column(name = "bank_id")
