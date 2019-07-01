@@ -3,6 +3,7 @@ package kakaopay.housingfinance.entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor()
 @Table(name = "supply_status")
+@ToString
 public class SupplyStatus {
     @Id
     @GeneratedValue
