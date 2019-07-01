@@ -8,7 +8,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,10 +30,4 @@ public class DataController {
         return new ResponseEntity<>(payload, httpHeaders, HttpStatus.OK);
     }
 
-    @GetMapping("/file")
-    public ResponseEntity<String> convertFile(
-            ) {
-        dataService.ConvertFile();
-        return new ResponseEntity<>("convert", httpHeaders, HttpStatus.OK);
-    }
 }
