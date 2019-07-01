@@ -1,6 +1,5 @@
 package kakaopay.housingfinance.controller;
 
-import kakaopay.housingfinance.dto.BankDto;
 import kakaopay.housingfinance.service.BankService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Map;
 
 @RestController
 public class BankController {
@@ -25,7 +24,7 @@ public class BankController {
     }
 
     @GetMapping("/banks")
-    public ResponseEntity<List<BankDto>> getAllBanks(){
+    public ResponseEntity<Map<String,Object>> getAllBanks(){
         return new ResponseEntity<>(bankService.getAllBanks(),httpHeaders, HttpStatus.OK);
     }
 }

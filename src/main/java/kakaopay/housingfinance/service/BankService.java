@@ -6,7 +6,9 @@ import kakaopay.housingfinance.repository.BankRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BankService {
@@ -17,7 +19,7 @@ public class BankService {
     }
 
     // TODO MAPSTRUCT 구현
-    public List<BankDto> getAllBanks() {
+    public Map<String,Object> getAllBanks() {
         List<Bank> banks = bankRepository.findAll();
         List<BankDto> bankDtoList = new ArrayList<>();
         for (Bank b : banks) {
@@ -27,6 +29,10 @@ public class BankService {
                             .build()
             );
         }
-        return bankDtoList;
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("bank",bankDtoList);
+        return resultMap;
     }
+
+    
 }
