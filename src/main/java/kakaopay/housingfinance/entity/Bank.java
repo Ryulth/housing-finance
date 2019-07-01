@@ -10,10 +10,12 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Builder
-@AllArgsConstructor()
+@AllArgsConstructor
 @Table(name = "bank")
 @ToString
 public class Bank {
+    protected Bank(){}
+
     @Id
     @GeneratedValue
     @Column(name = "bank_id")

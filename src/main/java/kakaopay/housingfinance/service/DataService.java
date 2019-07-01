@@ -18,6 +18,7 @@ public class DataService implements CommandLineRunner {
     private final ObjectConverter objectConverter;
     private final BankRepository bankRepository;
     private final SupplyStatusRepository supplyStatusRepository;
+
     public DataService(FileConverter fileConverter, ObjectConverter objectConverter, BankRepository bankRepository, SupplyStatusRepository supplyStatusRepository) {
         this.fileConverter = fileConverter;
         this.objectConverter = objectConverter;

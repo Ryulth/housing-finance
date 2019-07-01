@@ -14,6 +14,8 @@ import javax.persistence.*;
 @Table(name = "supply_status")
 @ToString
 public class SupplyStatus {
+    protected SupplyStatus(){}
+
     @Id
     @GeneratedValue
     @Column(name = "supply_status_id")

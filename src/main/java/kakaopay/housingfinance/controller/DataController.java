@@ -18,9 +18,10 @@ public class DataController {
     private static Logger logger = LoggerFactory.getLogger(DataController.class);
     private static final HttpHeaders httpHeaders = new HttpHeaders();
     private final DataService dataService;
+
     public DataController(DataService dataService) {
-        this.dataService = dataService;
         httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        this.dataService = dataService;
     }
 
     @PutMapping("/file")
