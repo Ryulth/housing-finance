@@ -37,7 +37,8 @@ dependencies {
     
     compile("org.springframework.boot:spring-boot-devtools") // 개발용 서버 버젼에 필요한 도구들
     compile('org.springframework.boot:spring-boot-starter-web') // RestController
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.6' //jackson
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.9' //jackson
+    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-csv', version: '2.9.9'
 
     compile group: 'org.projectlombok', name: 'lombok', version: '1.16.20' // 롬복
     annotationProcessor "org.projectlombok:lombok:1.16.16" // 이전 gradle 버젼은 설정해줘야 한다.
