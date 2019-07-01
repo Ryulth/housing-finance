@@ -10,14 +10,14 @@ import javax.persistence.*;
 @Getter
 @Builder
 @AllArgsConstructor()
-@Table(name = "supply-status")
+@Table(name = "supply_status")
 public class SupplyStatus {
     @Id
     @GeneratedValue
-    @Column(name = "supply-status-id")
+    @Column(name = "supply_status_id")
     private Long id;
-    
-    @Column(name = "bank-id")
+
+    @Column(name = "bank_id")
     private Long bankId;
 
     @Column

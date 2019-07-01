@@ -20,4 +20,6 @@ public class Bank {
     @Column(name = "bank_name")
     private String name;
 
+    @Column
+    private Integer year;
 }
