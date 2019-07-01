@@ -1,0 +1,46 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.4.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group 'com.kakaopay'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/libs-milestone" }
+    maven { url "https://repo.spring.io/libs-snapshot" }
+}
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    /* needs compile */
+    runtime('com.h2database:h2')
+    
+    compile("org.springframework.boot:spring-boot-devtools") // 개발용 서버 버젼에 필요한 도구들
+    compile('org.springframework.boot:spring-boot-starter-web') // RestController
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.6' //jackson
+
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.20' // 롬복
+    annotationProcessor "org.projectlombok:lombok:1.16.16" // 이전 gradle 버젼은 설정해줘야 한다.
+
+    compile('org.springframework.boot:spring-boot-starter-data-jpa') // JPA
+
+}
