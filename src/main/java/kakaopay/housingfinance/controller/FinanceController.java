@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -22,12 +23,19 @@ public class FinanceController {
     }
 
     @GetMapping("/finance/status")
-    public ResponseEntity<Map<String,Object>> getFinanceStatus(){
-        return new ResponseEntity<>(financeService.getFinanceStatus(),httpHeaders, HttpStatus.OK);
+    public ResponseEntity<Map<String, Object>> getFinanceStatus() {
+        return new ResponseEntity<>(financeService.getFinanceStatus(), httpHeaders, HttpStatus.OK);
     }
 
     @GetMapping("/finance/highest")
-    public ResponseEntity<Map<String,Object>> getHighestBank(){
-        return new ResponseEntity<>(financeService.getHighestBank(),httpHeaders, HttpStatus.OK);
+    public ResponseEntity<Map<String, Object>> getHighestBank() {
+        return new ResponseEntity<>(financeService.getHighestBank(), httpHeaders, HttpStatus.OK);
+    }
+
+    @GetMapping("/finance/minmax")
+    public ResponseEntity<Map<String, Object>> getMinMaxAmount(
+            @RequestParam(value = "name") String bankName
+    ) {
+        return new ResponseEntity<>(financeService.getMinMaxAmount(bankName), httpHeaders, HttpStatus.OK);
     }
 }
