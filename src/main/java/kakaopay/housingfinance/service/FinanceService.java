@@ -7,6 +7,7 @@ import kakaopay.housingfinance.repository.BankFinanceRepository;
 import kakaopay.housingfinance.repository.BankRepository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,6 +19,26 @@ public class FinanceService {
     public FinanceService(BankRepository bankRepository, BankFinanceRepository bankFinanceRepository) {
         this.bankRepository = bankRepository;
         this.bankFinanceRepository = bankFinanceRepository;
+    }
+    //TODO 메소드 구조 변경 요망
+    public Map<String, Object> getHighestBank() {
+        List<BankFinance> bankFinances = bankFinanceRepository.findAll();
+        Map<String, Integer> bankFinanceMap = calcYearAmountByBankId(bankFinances); // key == bankId/year
+
+        String key = Collections.max(bankFinanceMap.entrySet(),
+                Comparator.comparingInt(Map.Entry::getValue)).getKey();
+
+        String[] keys = key.split("/");
+        Long bankId = Long.valueOf(keys[0]);
+        Bank bank = bankRepository.findById(bankId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        Integer year = Integer.valueOf(keys[1]);
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("year", year);
+        resultMap.put("bank", bank.getName());
+        return resultMap;
     }
 
     //TODO 이름 매퍼 매핑과 관심사 분리 요망
