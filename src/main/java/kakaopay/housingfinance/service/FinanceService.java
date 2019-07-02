@@ -1,5 +1,6 @@
 package kakaopay.housingfinance.service;
 
+import kakaopay.housingfinance.entity.Bank;
 import kakaopay.housingfinance.entity.BankFinance;
 import kakaopay.housingfinance.pojo.FinanceStatusByYear;
 import kakaopay.housingfinance.repository.BankFinanceRepository;
@@ -7,6 +8,7 @@ import kakaopay.housingfinance.repository.BankRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FinanceService {
@@ -19,32 +21,43 @@ public class FinanceService {
     }
 
     public Map<String, Object> getFinanceStatus() {
+        Map<Long,String> bankMap = bankRepository.findAll()
+                .stream().collect(Collectors.toMap(Bank::getId,Bank::getName));
+
+
         List<BankFinance> bankFinances = bankFinanceRepository.findAll();
         List<FinanceStatusByYear> financeStatusByYears = new ArrayList<>();
         Map<String, Integer> bankFinanceMap = calcYearAmountByBankId(bankFinances); // key == bankId/year
-
+        StringBuilder stringBuilder = new StringBuilder();
         bankFinanceMap.forEach((key, yearAmount) -> {
             String[] keys = key.split("/");
             Long bankId = Long.valueOf(keys[0]);
-            Integer year = Integer.valueOf(keys[1]);
+            String year = stringBuilder.append(keys[1])
+                    .append(" 년")
+                    .toString();
+            stringBuilder.setLength(0);
+
             FinanceStatusByYear financeStatusByYear = FinanceStatusByYear.builder()
-                    .year(year.toString())
+                    .year(year)
                     .totalAmount(yearAmount)
-                    .detailAmount(Collections.singletonMap(bankId.toString(),yearAmount))
+                    .detailAmount(Collections.singletonMap(bankMap.get(bankId), yearAmount))
                     .build();
-            if(financeStatusByYears.contains(financeStatusByYear)){
+
+            try {
                 FinanceStatusByYear originalElement = financeStatusByYears.stream()
                         .filter(o -> o.equals(financeStatusByYear))
                         .findFirst().orElseThrow(NoSuchElementException::new);
+                originalElement.addTotalAmount(yearAmount);
                 originalElement.putDetailAmount(financeStatusByYear.getDetailAmount());
-            }
-            else {
+            } catch (NoSuchElementException e) {
                 financeStatusByYears.add(financeStatusByYear);
             }
         });
-        System.out.println(financeStatusByYears);
+        Collections.sort(financeStatusByYears);
+
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("name", "주택금융 공급현황");
+        resultMap.put("status",financeStatusByYears);
         return resultMap;
     }
 
