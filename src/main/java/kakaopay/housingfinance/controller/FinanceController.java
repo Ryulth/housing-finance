@@ -25,4 +25,9 @@ public class FinanceController {
     public ResponseEntity<Map<String,Object>> getFinanceStatus(){
         return new ResponseEntity<>(financeService.getFinanceStatus(),httpHeaders, HttpStatus.OK);
     }
+
+    @GetMapping("/finance/highest")
+    public ResponseEntity<Map<String,Object>> getHighestBank(){
+        return new ResponseEntity<>(financeService.getHighestBank(),httpHeaders, HttpStatus.OK);
+    }
 }
