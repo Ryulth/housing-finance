@@ -15,7 +15,7 @@ import java.util.Map;
 public class FinanceStatusByYear {
     private String year;
     @JsonProperty("total_amount")
-    private String totalAmount;
+    private Integer totalAmount;
     @JsonProperty("detail_amount")
     private Map<String,Integer> detailAmount;
 }
