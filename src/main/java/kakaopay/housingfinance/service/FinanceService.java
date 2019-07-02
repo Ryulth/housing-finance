@@ -20,15 +20,41 @@ public class FinanceService {
         this.bankFinanceRepository = bankFinanceRepository;
     }
 
+    //TODO 이름 매퍼 매핑과 관심사 분리 요망
     public Map<String, Object> getFinanceStatus() {
-        Map<Long,String> bankMap = bankRepository.findAll()
-                .stream().collect(Collectors.toMap(Bank::getId,Bank::getName));
-
-
         List<BankFinance> bankFinances = bankFinanceRepository.findAll();
-        List<FinanceStatusByYear> financeStatusByYears = new ArrayList<>();
         Map<String, Integer> bankFinanceMap = calcYearAmountByBankId(bankFinances); // key == bankId/year
+
+        List<FinanceStatusByYear> financeStatusByYears = mappingFinanceStatus(bankFinanceMap);
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("name", "주택금융 공급현황");
+        resultMap.put("status", financeStatusByYears);
+        return resultMap;
+    }
+
+    private Map<String, Integer> calcYearAmountByBankId(List<BankFinance> bankFinances) {
+        Map<String, Integer> bankFinanceMap = new HashMap<>();
         StringBuilder stringBuilder = new StringBuilder();
+        for (BankFinance bankFinance : bankFinances) {
+            String key = stringBuilder.append(bankFinance.getBankId())
+                    .append("/")
+                    .append(bankFinance.getYear())
+                    .toString();
+            stringBuilder.setLength(0);
+            bankFinanceMap.putIfAbsent(key, 0);
+            bankFinanceMap.compute(key, (s, integer) -> integer + bankFinance.getAmount());
+        }
+        return bankFinanceMap;
+    }
+
+    private List<FinanceStatusByYear> mappingFinanceStatus(Map<String, Integer> bankFinanceMap) {
+        Map<Long, String> bankMap = bankRepository.findAll()
+                .stream().collect(Collectors.toMap(Bank::getId, Bank::getName));
+
+        List<FinanceStatusByYear> financeStatusByYears = new ArrayList<>();
+        StringBuilder stringBuilder = new StringBuilder();
+
         bankFinanceMap.forEach((key, yearAmount) -> {
             String[] keys = key.split("/");
             Long bankId = Long.valueOf(keys[0]);
@@ -54,25 +80,7 @@ public class FinanceService {
             }
         });
         Collections.sort(financeStatusByYears);
-
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("name", "주택금융 공급현황");
-        resultMap.put("status",financeStatusByYears);
-        return resultMap;
-    }
-
-    private Map<String, Integer> calcYearAmountByBankId(List<BankFinance> bankFinances) {
-        Map<String, Integer> bankFinanceMap = new HashMap<>();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (BankFinance bankFinance : bankFinances) {
-            String key = stringBuilder.append(bankFinance.getBankId())
-                    .append("/")
-                    .append(bankFinance.getYear())
-                    .toString();
-            stringBuilder.setLength(0);
-            bankFinanceMap.putIfAbsent(key, 0);
-            bankFinanceMap.compute(key, (s, integer) -> integer + bankFinance.getAmount());
-        }
-        return bankFinanceMap;
+        
+        return financeStatusByYears;
     }
 }
