@@ -80,7 +80,7 @@ public class FinanceService {
             }
         });
         Collections.sort(financeStatusByYears);
-        
+
         return financeStatusByYears;
     }
 }
