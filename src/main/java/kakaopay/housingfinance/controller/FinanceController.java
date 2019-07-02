@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-@RestController("/finance")
+@RestController
 public class FinanceController {
     private static Logger logger = LoggerFactory.getLogger(FinanceController.class);
     private static final HttpHeaders httpHeaders = new HttpHeaders();
@@ -21,7 +21,7 @@ public class FinanceController {
         this.financeService = financeService;
     }
 
-    @GetMapping("/status")
+    @GetMapping("/finance/status")
     public ResponseEntity<Map<String,Object>> getFinanceStatus(){
         return new ResponseEntity<>(financeService.getFinanceStatus(),httpHeaders, HttpStatus.OK);
     }
