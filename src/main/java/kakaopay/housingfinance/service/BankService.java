@@ -22,10 +22,10 @@ public class BankService {
     public Map<String,Object> getAllBanks() {
         List<Bank> banks = bankRepository.findAll();
         List<BankDto> bankDtoList = new ArrayList<>();
-        for (Bank b : banks) {
+        for (Bank bank : banks) {
             bankDtoList.add(
                     BankDto.builder()
-                            .name(b.getName())
+                            .name(bank.getName())
                             .build()
             );
         }
