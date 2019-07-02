@@ -20,6 +20,36 @@ public class FinanceService {
         this.bankRepository = bankRepository;
         this.bankFinanceRepository = bankFinanceRepository;
     }
+
+    public Map<String, Object> getMinMaxAmount(String bankName) {
+        Bank bank = bankRepository.findByName(bankName)
+                .orElseThrow(EntityNotFoundException::new);
+        List<BankFinance> bankFinances = bankFinanceRepository.findAllByBankId(bank.getId());
+        Map<String, Integer> bankFinanceMap = calcYearAmountByBankId(bankFinances); // key == bankId/year
+        List<Map<String, Object>> supportAmounts = new ArrayList<>();
+
+        String minKey = Collections.min(bankFinanceMap.entrySet(),
+                Comparator.comparingInt(Map.Entry::getValue)).getKey();
+        String maxKey = Collections.max(bankFinanceMap.entrySet(),
+                Comparator.comparingInt(Map.Entry::getValue)).getKey();
+
+        supportAmounts.add(getSupportAmountMap(minKey,bankFinanceMap.get(minKey)));
+        supportAmounts.add(getSupportAmountMap(maxKey,bankFinanceMap.get(maxKey)));
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("bank", bankName);
+        resultMap.put("support_amount",supportAmounts);
+        return resultMap;
+    }
+    private Map<String, Object> getSupportAmountMap(String key,Integer amount){
+        Integer year = Integer.valueOf(key.split("/")[1]);
+        Map<String, Object> supportAmountMap = new HashMap<>();
+
+        supportAmountMap.put("year", year);
+        supportAmountMap.put("amount",amount/12);
+        return supportAmountMap;
+
+    }
     //TODO 메소드 구조 변경 요망
     public Map<String, Object> getHighestBank() {
         List<BankFinance> bankFinances = bankFinanceRepository.findAll();
