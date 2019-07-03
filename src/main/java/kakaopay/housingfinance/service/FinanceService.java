@@ -3,6 +3,7 @@ package kakaopay.housingfinance.service;
 import kakaopay.housingfinance.entity.Bank;
 import kakaopay.housingfinance.entity.BankFinance;
 import kakaopay.housingfinance.pojo.FinanceStatusByYear;
+import kakaopay.housingfinance.predict.PredictFinance;
 import kakaopay.housingfinance.repository.BankFinanceRepository;
 import kakaopay.housingfinance.repository.BankRepository;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,13 @@ public class FinanceService {
     private final BankRepository bankRepository;
     private final BankFinanceRepository bankFinanceRepository;
     private final PreProcessService preProcessService;
+    private final PredictFinance predictFinance;
 
-    public FinanceService(BankRepository bankRepository, BankFinanceRepository bankFinanceRepository, PreProcessService preProcessService) {
+    public FinanceService(BankRepository bankRepository, BankFinanceRepository bankFinanceRepository, PreProcessService preProcessService, PredictFinance predictFinance) {
         this.bankRepository = bankRepository;
         this.bankFinanceRepository = bankFinanceRepository;
         this.preProcessService = preProcessService;
+        this.predictFinance = predictFinance;
     }
 
     public Map<String, Object> getAllFinances() {
@@ -84,5 +87,20 @@ public class FinanceService {
         supportAmountMap.put("year", year);
         supportAmountMap.put("amount", entry.getValue() / 12);
         return supportAmountMap;
+    }
+
+    public Map<String,Object> getPredictAmountByMonth(String bankName,Integer predictMonth){
+        Bank bank = bankRepository.findByName(bankName)
+                .orElseThrow(EntityNotFoundException::new);
+        List<BankFinance> bankFinances = bankFinanceRepository.findAllByBankId(bank.getId());
+        Integer predictYear = bankFinances.get(bankFinances.size() - 1).getYear() +1;
+        Integer predictAmount = predictFinance.predictFinanceAmount(bankFinances,predictYear,predictMonth);
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("bank",bankName);
+        resultMap.put("year",predictYear);
+        resultMap.put("month",predictMonth);
+        resultMap.put("amount",predictAmount);
+        return resultMap;
     }
 }
