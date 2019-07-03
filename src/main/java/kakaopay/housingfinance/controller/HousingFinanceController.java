@@ -79,6 +79,9 @@ public class HousingFinanceController {
             return new ResponseEntity<>(financeService.getPredictAmountByMonth(bankName, month), httpHeaders, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(httpHeaders, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            logger.error(e.toString());
+            return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -89,18 +89,17 @@ public class FinanceService {
         return supportAmountMap;
     }
 
-    public Map<String,Object> getPredictAmountByMonth(String bankName,Integer month){
+    public Map<String,Object> getPredictAmountByMonth(String bankName,Integer predictMonth){
         Bank bank = bankRepository.findByName(bankName)
                 .orElseThrow(EntityNotFoundException::new);
         List<BankFinance> bankFinances = bankFinanceRepository.findAllByBankId(bank.getId());
-        predictFinance.predictFinanceByMonth(bankFinances,month);
-        Integer predictAmount = 100;
-
+        Integer predictYear = bankFinances.get(bankFinances.size() - 1).getYear() +1;
+        Integer predictAmount = predictFinance.predictFinanceAmount(bankFinances,predictYear,predictMonth);
 
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("bank",bankName);
-        resultMap.put("year",2018);
-        resultMap.put("month",month);
+        resultMap.put("year",predictYear);
+        resultMap.put("month",predictMonth);
         resultMap.put("amount",predictAmount);
         return resultMap;
     }
