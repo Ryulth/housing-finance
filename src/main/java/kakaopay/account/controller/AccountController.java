@@ -35,6 +35,7 @@ public class AccountController {
             return new ResponseEntity<>(Collections.singletonMap("error", e.getMessage()), httpHeaders, HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
             logger.error(e.toString());
+            e.printStackTrace();
             return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -48,6 +49,7 @@ public class AccountController {
             return new ResponseEntity<>(Collections.singletonMap("error", e.getMessage()), httpHeaders, HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
             logger.error(e.toString());
+            e.printStackTrace();
             return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

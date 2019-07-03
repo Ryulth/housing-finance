@@ -10,18 +10,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class AccountService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
+    private final TokenService tokenService;
 
-    public AccountService(UserRepository userRepository, JwtService jwtService) {
+    public AccountService(UserRepository userRepository, TokenService tokenService) {
         this.userRepository = userRepository;
-        this.jwtService = jwtService;
+        this.tokenService = tokenService;
         this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
@@ -37,10 +40,8 @@ public class AccountService {
 
         userRepository.save(user);
 
-        String jwtToken = jwtService.publishToken("username",user.getUsername(),"userInfo");
-
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("jwt", jwtToken);
+        resultMap.put("token", getToken(user));
         return resultMap;
     }
 
@@ -51,11 +52,17 @@ public class AccountService {
             throw new BadCredentialsException("Incorrect password");
         }
 
-        String jwtToken = jwtService.publishToken("username",user.getUsername(),"userInfo");
-
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("jwt", jwtToken );
+        resultMap.put("token", getToken(user));
         return resultMap;
+    }
+
+    private String getToken(User user) {
+        Map<String, Object> body = Stream.of(
+                new AbstractMap.SimpleEntry<>("username", user.getUsername()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        return tokenService.publishToken(body, "userInfo");
     }
 
 }
