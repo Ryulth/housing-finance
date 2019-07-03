@@ -31,38 +31,38 @@ public class HousingFinanceController {
     public ResponseEntity getAllBanks() {
         try {
             return new ResponseEntity<>(bankService.getAllBanks(), httpHeaders, HttpStatus.OK);
-        } catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.toString());
             return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/finances")
-    public ResponseEntity getFinanceStatus() {
+    public ResponseEntity getAllFinances() {
         try {
-            return new ResponseEntity<>(financeService.getFinanceStatus(), httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(financeService.getAllFinances(), httpHeaders, HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.toString());
             return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/finances/year/highest")
-    public ResponseEntity getHighestBank() {
+    @GetMapping("/finances/highest/year")
+    public ResponseEntity getHighestYearBank() {
         try {
-            return new ResponseEntity<>(financeService.getHighestBank(), httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(financeService.getHighestYearBank(), httpHeaders, HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.toString());
             return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/finances/year/minmax")
-    public ResponseEntity getMinMaxAmount(
+    @GetMapping("/finances/minmax/year")
+    public ResponseEntity getMinMaxYearBank(
             @RequestParam(value = "name") String bankName
     ) {
         try {
-            return new ResponseEntity<>(financeService.getMinMaxAmount(bankName), httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(financeService.getMinMaxYearBank(bankName), httpHeaders, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(httpHeaders, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {

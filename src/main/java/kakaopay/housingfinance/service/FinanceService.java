@@ -22,8 +22,8 @@ public class FinanceService {
         this.bankFinanceRepository = bankFinanceRepository;
         this.preProcessService = preProcessService;
     }
-    //TODO 이름 매퍼 매핑과 관심사 분리 요망
-    public Map<String, Object> getFinanceStatus() {
+
+    public Map<String, Object> getAllFinances() {
         List<BankFinance> bankFinances = bankFinanceRepository.findAll();
         Map<String, Integer> bankFinanceMap = preProcessService.mappingAmountOfYearByBankIdAndYear(bankFinances); // key == bankId/year
         Map<Long, String> bankNameMap = bankRepository.findAll()
@@ -35,8 +35,8 @@ public class FinanceService {
         resultMap.put("status", financeStatusByYears);
         return resultMap;
     }
-    //TODO 메소드 구조 변경 요망
-    public Map<String, Object> getHighestBank() {
+
+    public Map<String, Object> getHighestYearBank() {
         List<BankFinance> bankFinances = bankFinanceRepository.findAll();
         Map<String, Integer> bankFinanceMap = preProcessService.mappingAmountOfYearByBankIdAndYear(bankFinances); // key == bankId/year
 
@@ -56,7 +56,7 @@ public class FinanceService {
         return resultMap;
     }
 
-    public Map<String, Object> getMinMaxAmount(String bankName) {
+    public Map<String, Object> getMinMaxYearBank(String bankName) {
         Bank bank = bankRepository.findByName(bankName)
                 .orElseThrow(EntityNotFoundException::new);
         List<BankFinance> bankFinances = bankFinanceRepository.findAllByBankId(bank.getId());
