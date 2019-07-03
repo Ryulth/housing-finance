@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
+import javax.persistence.EntityNotFoundException;
 
 @RestController
 public class HousingFinanceController {
@@ -26,25 +26,48 @@ public class HousingFinanceController {
         this.financeService = financeService;
         this.bankService = bankService;
     }
+
     @GetMapping("/banks")
-    public ResponseEntity<Map<String,Object>> getAllBanks(){
-        return new ResponseEntity<>(bankService.getAllBanks(),httpHeaders, HttpStatus.OK);
+    public ResponseEntity getAllBanks() {
+        try {
+            return new ResponseEntity<>(bankService.getAllBanks(), httpHeaders, HttpStatus.OK);
+        } catch (Exception e){
+            logger.error(e.toString());
+            return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @GetMapping("/finance/status")
-    public ResponseEntity<Map<String, Object>> getFinanceStatus() {
-        return new ResponseEntity<>(financeService.getFinanceStatus(), httpHeaders, HttpStatus.OK);
+    @GetMapping("/finances")
+    public ResponseEntity getFinanceStatus() {
+        try {
+            return new ResponseEntity<>(financeService.getFinanceStatus(), httpHeaders, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error(e.toString());
+            return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @GetMapping("/finance/highest")
-    public ResponseEntity<Map<String, Object>> getHighestBank() {
-        return new ResponseEntity<>(financeService.getHighestBank(), httpHeaders, HttpStatus.OK);
+    @GetMapping("/finances/year/highest")
+    public ResponseEntity getHighestBank() {
+        try {
+            return new ResponseEntity<>(financeService.getHighestBank(), httpHeaders, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error(e.toString());
+            return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @GetMapping("/finance/minmax")
-    public ResponseEntity<Map<String, Object>> getMinMaxAmount(
+    @GetMapping("/finances/year/minmax")
+    public ResponseEntity getMinMaxAmount(
             @RequestParam(value = "name") String bankName
     ) {
-        return new ResponseEntity<>(financeService.getMinMaxAmount(bankName), httpHeaders, HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(financeService.getMinMaxAmount(bankName), httpHeaders, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(httpHeaders, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            logger.error(e.toString());
+            return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
