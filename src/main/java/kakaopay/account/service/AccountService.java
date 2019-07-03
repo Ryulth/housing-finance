@@ -3,10 +3,10 @@ package kakaopay.account.service;
 import kakaopay.account.dto.UserDto;
 import kakaopay.account.entity.User;
 import kakaopay.account.repository.UserRepository;
-import org.springframework.security.BadCredentialsException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
@@ -17,38 +17,45 @@ import java.util.Map;
 public class AccountService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AccountService(UserRepository userRepository) {
+    public AccountService(UserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
         this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    public Map signUp(UserDto userDto) {
-        if (userRepository.existsByEmail(userDto.getEmail())) {
-            throw new EntityExistsException("Email is duplicated");
+    public Map<String, Object> signUp(UserDto userDto) {
+        if (userRepository.existsByUsername(userDto.getUsername())) {
+            throw new EntityExistsException("Username is duplicated");
         }
 
         User user = User.builder()
-                .email(userDto.getEmail())
+                .username(userDto.getUsername())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .build();
 
         userRepository.save(user);
 
+        String jwtToken = jwtService.publishToken("username",user.getUsername(),"userInfo");
+
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("jwt", "token");
+        resultMap.put("jwt", jwtToken);
         return resultMap;
     }
 
-    public Map signIn(UserDto userDto) {
-        User user = userRepository.findByEmail(userDto.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("Email not found"));
+    public Map<String, Object> signIn(UserDto userDto) {
+        User user = userRepository.findByUsername(userDto.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
         if (!passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
             throw new BadCredentialsException("Incorrect password");
         }
 
+        String jwtToken = jwtService.publishToken("username",user.getUsername(),"userInfo");
+
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("jwt", "token");
+        resultMap.put("jwt", jwtToken );
         return resultMap;
     }
+
 }

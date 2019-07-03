@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.BadCredentialsException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,13 +29,11 @@ public class AccountController {
     @PostMapping("/signup")
     public ResponseEntity signUp(
             @RequestBody UserDto userDto) {
-        try{
+        try {
             return new ResponseEntity<>(accountService.signUp(userDto), httpHeaders, HttpStatus.OK);
-        }
-        catch (EntityExistsException e){
-            return new ResponseEntity<>(Collections.singletonMap("error",e.getMessage()),httpHeaders, HttpStatus.BAD_REQUEST);
-        }
-        catch (Exception e){
+        } catch (EntityExistsException e) {
+            return new ResponseEntity<>(Collections.singletonMap("error", e.getMessage()), httpHeaders, HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
             logger.error(e.toString());
             return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -44,13 +42,11 @@ public class AccountController {
     @PostMapping("/signin")
     public ResponseEntity signIn(
             @RequestBody UserDto userDto) {
-        try{
+        try {
             return new ResponseEntity<>(accountService.signIn(userDto), httpHeaders, HttpStatus.OK);
-        }
-        catch (EntityNotFoundException|BadCredentialsException e){
-            return new ResponseEntity<>(Collections.singletonMap("error",e.getMessage()),httpHeaders, HttpStatus.BAD_REQUEST);
-        }
-        catch (Exception e){
+        } catch (EntityNotFoundException | BadCredentialsException e) {
+            return new ResponseEntity<>(Collections.singletonMap("error", e.getMessage()), httpHeaders, HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
             logger.error(e.toString());
             return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
         }
