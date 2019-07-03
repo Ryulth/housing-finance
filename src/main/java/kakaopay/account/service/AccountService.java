@@ -7,6 +7,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,14 +22,16 @@ public class AccountService {
 
     public Map signUp(UserDto userDto) {
         if(userRepository.existsByEmail(userDto.getEmail())){
-            //TODO Exception
+            throw new EntityExistsException("Email is duplicated");
         }
 
         User user = User.builder()
                 .email(userDto.getEmail())
                 .password( passwordEncoder.encode(userDto.getPassword()))
                 .build();
-        
+
+        userRepository.save(user);
+
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("jwt", "token");
         return resultMap;

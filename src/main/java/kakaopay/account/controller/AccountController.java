@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.EntityExistsException;
+
 @RestController
 public class AccountController {
     private static Logger logger = LoggerFactory.getLogger(AccountController.class);
@@ -24,6 +26,16 @@ public class AccountController {
     @PostMapping("/signup")
     public ResponseEntity signUp(
             @RequestBody UserDto userDto) {
-        return new ResponseEntity<>(accountService.signUp(userDto), httpHeaders, HttpStatus.OK);
+        try{
+            return new ResponseEntity<>(accountService.signUp(userDto), httpHeaders, HttpStatus.OK);
+        }
+        catch (EntityExistsException e){
+            return new ResponseEntity<>(httpHeaders, HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e){
+            logger.error(e.toString());
+            return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 }
