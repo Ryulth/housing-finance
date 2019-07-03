@@ -51,4 +51,6 @@ dependencies {
 
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.3.0.Final'
     testAnnotationProcessor 'org.mapstruct:mapstruct-processor:1.3.0.Final'
+
+    compile 'com.github.signaflo:timeseries:0.4'
 }

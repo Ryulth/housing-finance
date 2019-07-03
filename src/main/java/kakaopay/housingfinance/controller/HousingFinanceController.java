@@ -70,4 +70,12 @@ public class HousingFinanceController {
             return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/finances/predict")
+    public ResponseEntity getPredictAmountByMonth(
+            @RequestParam(value = "name") String bankName,
+            @RequestParam(value = "month") Integer month
+    ){
+        return new ResponseEntity<>(financeService.getPredictAmountByMonth(bankName,month),httpHeaders,HttpStatus.OK);
+    }
 }
