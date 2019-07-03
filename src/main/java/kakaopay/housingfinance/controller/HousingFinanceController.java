@@ -74,8 +74,11 @@ public class HousingFinanceController {
     @GetMapping("/finances/predict")
     public ResponseEntity getPredictAmountByMonth(
             @RequestParam(value = "name") String bankName,
-            @RequestParam(value = "month") Integer month
-    ){
-        return new ResponseEntity<>(financeService.getPredictAmountByMonth(bankName,month),httpHeaders,HttpStatus.OK);
+            @RequestParam(value = "month") Integer month) {
+        try {
+            return new ResponseEntity<>(financeService.getPredictAmountByMonth(bankName, month), httpHeaders, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(httpHeaders, HttpStatus.BAD_REQUEST);
+        }
     }
 }
