@@ -8,9 +8,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -54,5 +53,18 @@ public class AccountController {
         }
     }
 
+    @GetMapping("/refresh")
+    public ResponseEntity signIn(
+            @RequestHeader("Authorization") String token ) {
+        try {
+            return new ResponseEntity<>(accountService.getRefreshToken(token), httpHeaders, HttpStatus.OK);
+        } catch (IllegalAccessException| UsernameNotFoundException e) {
+            return new ResponseEntity<>(Collections.singletonMap("error", e.getMessage()), httpHeaders, HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
+            logger.error(e.toString());
+            e.printStackTrace();
+            return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }

@@ -65,4 +65,15 @@ public class AccountService {
         return tokenService.publishToken(body, "userInfo");
     }
 
+    public Map<String, Object> getRefreshToken(String originalToken) throws IllegalAccessException {
+        String username = tokenService.getUsernameFromToken(originalToken);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+        String refreshToken = getToken(user);
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("refreshToken", refreshToken);
+        return resultMap;
+    }
+
 }
