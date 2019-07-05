@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
 import java.util.AbstractMap;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -39,10 +38,7 @@ public class AccountService {
                 .build();
 
         userRepository.save(user);
-
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("token", getToken(user));
-        return resultMap;
+        return getToken(user);
     }
 
     public Map<String, Object> signIn(UserDto userDto) {
@@ -51,13 +47,10 @@ public class AccountService {
         if (!passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
             throw new BadCredentialsException("Incorrect password");
         }
-
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("token", getToken(user));
-        return resultMap;
+        return getToken(user);
     }
 
-    private String getToken(User user) {
+    private Map<String, Object> getToken(User user) {
         Map<String, Object> body = Stream.of(
                 new AbstractMap.SimpleEntry<>("username", user.getUsername()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -65,15 +58,12 @@ public class AccountService {
         return tokenService.publishToken(body, "userInfo");
     }
 
-    public Map<String, Object> getRefreshToken(String originalToken) throws IllegalAccessException {
+    public Map<String, Object> updateAccessToken(String originalToken) throws IllegalAccessException {
         String username = tokenService.getUsernameFromToken(originalToken);
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-        String refreshToken = getToken(user);
 
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("refreshToken", refreshToken);
-        return resultMap;
+       return getToken(user);
     }
 
 }

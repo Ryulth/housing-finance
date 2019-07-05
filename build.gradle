@@ -54,7 +54,6 @@ dependencies {
 
     compile 'com.github.signaflo:timeseries:0.4'
 
-    compile('org.springframework.boot:spring-boot-starter-security') // JPA
     compile group: 'org.springframework.security', name: 'spring-security-core', version: '5.1.5.RELEASE'
     compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.1.5.RELEASE'
 

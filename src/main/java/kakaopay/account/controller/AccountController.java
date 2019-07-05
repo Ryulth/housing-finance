@@ -25,7 +25,7 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/account/signup")
     public ResponseEntity signUp(
             @RequestBody UserDto userDto) {
         try {
@@ -39,7 +39,7 @@ public class AccountController {
         }
     }
 
-    @PostMapping("/signin")
+    @PostMapping("/account/signin")
     public ResponseEntity signIn(
             @RequestBody UserDto userDto) {
         try {
@@ -53,11 +53,11 @@ public class AccountController {
         }
     }
 
-    @GetMapping("/refresh")
+    @GetMapping("/account/refresh")
     public ResponseEntity signIn(
             @RequestHeader("Authorization") String token ) {
         try {
-            return new ResponseEntity<>(accountService.getRefreshToken(token), httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(accountService.updateAccessToken(token), httpHeaders, HttpStatus.OK);
         } catch (IllegalAccessException| UsernameNotFoundException e) {
             return new ResponseEntity<>(Collections.singletonMap("error", e.getMessage()), httpHeaders, HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
