@@ -27,7 +27,7 @@ public class HousingFinanceController {
         this.bankService = bankService;
     }
 
-    @GetMapping("/banks")
+    @GetMapping("/apis/banks")
     public ResponseEntity getAllBanks() {
         try {
             return new ResponseEntity<>(bankService.getAllBanks(), httpHeaders, HttpStatus.OK);
@@ -37,7 +37,7 @@ public class HousingFinanceController {
         }
     }
 
-    @GetMapping("/finances")
+    @GetMapping("/apis/finances")
     public ResponseEntity getAllFinances() {
         try {
             return new ResponseEntity<>(financeService.getAllFinances(), httpHeaders, HttpStatus.OK);
@@ -47,7 +47,7 @@ public class HousingFinanceController {
         }
     }
 
-    @GetMapping("/finances/highest/year")
+    @GetMapping("/apis/finances/highest/year")
     public ResponseEntity getHighestYearBank() {
         try {
             return new ResponseEntity<>(financeService.getHighestYearBank(), httpHeaders, HttpStatus.OK);
@@ -57,7 +57,7 @@ public class HousingFinanceController {
         }
     }
 
-    @GetMapping("/finances/minmax/year")
+    @GetMapping("/apis/finances/minmax/year")
     public ResponseEntity getMinMaxYearBank(
             @RequestParam(value = "name") String bankName
     ) {
@@ -71,7 +71,7 @@ public class HousingFinanceController {
         }
     }
 
-    @GetMapping("/finances/predict")
+    @GetMapping("/apis/finances/predict")
     public ResponseEntity getPredictAmountByMonth(
             @RequestParam(value = "name") String bankName,
             @RequestParam(value = "month") Integer month) {
