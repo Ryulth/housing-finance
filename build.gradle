@@ -54,8 +54,11 @@ dependencies {
 
     compile 'com.github.signaflo:timeseries:0.4'
 
+
     compile group: 'org.springframework.security', name: 'spring-security-core', version: '5.1.5.RELEASE'
     compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.1.5.RELEASE'
 
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
+
 }
