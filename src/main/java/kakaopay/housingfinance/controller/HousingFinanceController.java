@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
 
 @RestController
 @Api(value = "HousingFinanceController")
@@ -37,7 +38,7 @@ public class HousingFinanceController {
             return new ResponseEntity<>(bankService.getAllBanks(), httpHeaders, HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.toString());
-            return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(Collections.singletonMap("error","INTERNAL SERVER ERROR"),httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -48,7 +49,7 @@ public class HousingFinanceController {
             return new ResponseEntity<>(financeService.getAllFinances(), httpHeaders, HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.toString());
-            return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(Collections.singletonMap("error","INTERNAL SERVER ERROR"),httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -59,7 +60,7 @@ public class HousingFinanceController {
             return new ResponseEntity<>(financeService.getHighestYearBank(), httpHeaders, HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.toString());
-            return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(Collections.singletonMap("error","INTERNAL SERVER ERROR"),httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -71,10 +72,10 @@ public class HousingFinanceController {
         try {
             return new ResponseEntity<>(financeService.getMinMaxYearBank(bankName), httpHeaders, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(httpHeaders, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Collections.singletonMap("error","Cannot Find Bank Name"),httpHeaders, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             logger.error(e.toString());
-            return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(Collections.singletonMap("error","INTERNAL SERVER ERROR"),httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -82,14 +83,17 @@ public class HousingFinanceController {
     @ApiOperation(value="Predict Amount ByMonth API", notes="특정 은행의 2018년 특정 달의 지원금액을 예측하는 API.")
     public ResponseEntity getPredictAmountByMonth(
             @RequestParam(value = "name") String bankName,
-            @RequestParam(value = "month") Integer month) {
+            @RequestParam(value = "month") int month) {
+        if(month<1||month>12){
+            return new ResponseEntity<>(Collections.singletonMap("error","Please Check Month"),httpHeaders, HttpStatus.BAD_REQUEST);
+        }
         try {
             return new ResponseEntity<>(financeService.getPredictAmountByMonth(bankName, month), httpHeaders, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(httpHeaders, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Collections.singletonMap("error","Cannot Find Bank Name"),httpHeaders, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             logger.error(e.toString());
-            return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(Collections.singletonMap("error","INTERNAL SERVER ERROR"),httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

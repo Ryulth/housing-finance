@@ -28,7 +28,7 @@ public class AccountController {
     }
 
     @PostMapping("/account/signup")
-    @ApiOperation(value="SingUP API", notes="회원가입을 하면 토큰을 반환하는 API.")
+    @ApiOperation(value="SingUP API", notes="회원가입을 하면 토큰을 반환하는 API. (Authorization Header 필요 없습니다. Swagger 전역 설정 원인)")
     public ResponseEntity signUp(
             @RequestBody UserDto userDto) {
         try {
@@ -37,13 +37,12 @@ public class AccountController {
             return new ResponseEntity<>(Collections.singletonMap("error", e.getMessage()), httpHeaders, HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
             logger.error(e.toString());
-            e.printStackTrace();
-            return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(Collections.singletonMap("error","INTERNAL SERVER ERROR"),httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/account/signin")
-    @ApiOperation(value="SingIn API", notes="로그인을 하면 토큰을 반환하는 API.")
+    @ApiOperation(value="SingIn API", notes="로그인을 하면 토큰을 반환하는 API. (Authorization Header 필요 없습니다. Swagger 전역 설정 원인)")
     public ResponseEntity signIn(
             @RequestBody UserDto userDto) {
         try {
@@ -52,8 +51,7 @@ public class AccountController {
             return new ResponseEntity<>(Collections.singletonMap("error", e.getMessage()), httpHeaders, HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
             logger.error(e.toString());
-            e.printStackTrace();
-            return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(Collections.singletonMap("error","INTERNAL SERVER ERROR"),httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -67,8 +65,7 @@ public class AccountController {
             return new ResponseEntity<>(Collections.singletonMap("error", e.getMessage()), httpHeaders, HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
             logger.error(e.toString());
-            e.printStackTrace();
-            return new ResponseEntity<>(httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(Collections.singletonMap("error","INTERNAL SERVER ERROR"),httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
