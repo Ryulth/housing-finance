@@ -18,9 +18,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
-
 
 @RunWith(MockitoJUnitRunner.class)
 public class FinanceServiceTest {
@@ -65,19 +65,27 @@ public class FinanceServiceTest {
                 .detailAmount(detailAmountMap2016)
                 .build());
 
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("name", "주택금융 공급현황");
-        resultMap.put("status", financeStatusByYears);
-        assertThat(resultMap, is(financeService.getAllFinances()));
+        Map<String, Object> expectedMap = new HashMap<>();
+        expectedMap.put("name", "주택금융 공급현황");
+        expectedMap.put("status", financeStatusByYears);
+
+        Map<String, Object> resultMap = financeService.getAllFinances();
+
+        assertThat(resultMap, is(notNullValue()));
+        assertThat(resultMap, is(expectedMap));
     }
 
     @Test
     public void testGetHighestYearBank() {
 
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("year", "2015");
-        resultMap.put("bank", "카카오페이");
-        assertThat(resultMap, is(financeService.getHighestYearBank()));
+        Map<String, Object> expectedMap = new HashMap<>();
+        expectedMap.put("year", "2015");
+        expectedMap.put("bank", "카카오페이");
+
+        Map<String, Object> resultMap = financeService.getHighestYearBank();
+
+        assertThat(resultMap, is(notNullValue()));
+        assertThat(resultMap, is(expectedMap));
     }
 
     @Test
@@ -95,11 +103,15 @@ public class FinanceServiceTest {
         supportAmounts.add(supportAmountMapMax);
 
         String bankName = "카카오페이";
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("bank", bankName);
-        resultMap.put("support_amount", supportAmounts);
+        Map<String, Object> expectedMap = new HashMap<>();
+        expectedMap.put("bank", bankName);
+        expectedMap.put("support_amount", supportAmounts);
 
-        assertThat(resultMap, is(financeService.getMinMaxYearBank(bankName)));
+        Map<String, Object> resultMap = financeService.getMinMaxYearBank(bankName);
+
+        assertThat(resultMap, is(notNullValue()));
+        assertThat(resultMap, is(expectedMap));
+
     }
 
     @Test
@@ -107,12 +119,16 @@ public class FinanceServiceTest {
         String bankName = "카카오페이";
         int predictMonth = 12;
 
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("bank", bankName);
-        resultMap.put("year", 2017);
-        resultMap.put("month", predictMonth);
-        resultMap.put("amount", 0);
-        assertThat(resultMap, is(financeService.getPredictAmountByMonth(bankName, predictMonth)));
+        Map<String, Object> expectedMap = new HashMap<>();
+        expectedMap.put("bank", bankName);
+        expectedMap.put("year", 2017);
+        expectedMap.put("month", predictMonth);
+        expectedMap.put("amount", 0);
+
+        Map<String, Object> resultMap = financeService.getPredictAmountByMonth(bankName,predictMonth);
+
+        assertThat(resultMap, is(notNullValue()));
+        assertThat(resultMap, is(expectedMap));
     }
 
     private void mockingRepository() {

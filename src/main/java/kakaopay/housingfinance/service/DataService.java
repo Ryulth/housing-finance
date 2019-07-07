@@ -33,7 +33,7 @@ public class DataService implements CommandLineRunner {
 
     @Transactional
     public void ConvertFile(){
-        List<List<String>> rowData = fileConverter.fileConvert();
+        List<List<String>> rowData = fileConverter.convertFile();
         List<String> columnNames = rowData.remove(0);
         List<Bank> banks = objectConverter.bankListMapper(columnNames);
         bankRepository.saveAll(banks);

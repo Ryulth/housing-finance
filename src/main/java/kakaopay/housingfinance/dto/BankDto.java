@@ -6,6 +6,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class BankDto {
     String name;
 }
