@@ -18,7 +18,7 @@ import java.util.List;
 public class PredictFinanceByArima implements PredictFinance {
 
     @Override
-    public Integer predictFinanceAmount(List<BankFinance> bankFinances, Integer predictYear, Integer predictMonth) {
+    public int predictFinanceAmount(List<BankFinance> bankFinances, int predictYear, int predictMonth) {
         TimePeriod timePeriodMonth = TimePeriod.oneMonth();
         TimeSeries timeSeries = TimeSeries.from(
                 timePeriodMonth,

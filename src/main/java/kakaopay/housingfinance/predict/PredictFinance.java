@@ -7,5 +7,5 @@ import java.util.List;
 
 @Service
 public interface PredictFinance {
-    Integer predictFinanceAmount(List<BankFinance> bankFinances,Integer predictYear ,Integer predictMonth);
+    int predictFinanceAmount(List<BankFinance> bankFinances,int predictYear ,int predictMonth);
 }
