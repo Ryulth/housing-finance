@@ -2,6 +2,7 @@
 
 > 주택 금융 서비스 API 개발
 
+### [API 테스트 페이지 바로가기](<http://hf.ryulth.com/swagger-ui.html>)
 
 ### 개요
 
@@ -86,9 +87,9 @@ POST /account/singin
 | 400  | Request 필드 부족      |
 | 401 | Username or Password 틀릴 경우 |
 
-#### 토큰 재발급 / refresh 
+#### 토큰 재발급 / update 
 
-GET /account/refresh
+GET /account/update
 
 * RequestHeader
 
