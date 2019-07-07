@@ -14,9 +14,9 @@ public class JwtService implements TokenService {
     private @Value("${jwt.secret}")
     String secretKey;
     private @Value("${jwt.expiration-time.access-token}")
-    Integer accessTokenExpirationTime;
+    int accessTokenExpirationTime;
     private @Value("${jwt.expiration-time.refresh-token}")
-    Integer refreshTokenExpirationTime;
+    int refreshTokenExpirationTime;
 
 
     @Override

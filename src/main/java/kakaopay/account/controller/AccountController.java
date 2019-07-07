@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 
 @RestController
@@ -44,7 +43,7 @@ public class AccountController {
             @RequestBody UserDto userDto) {
         try {
             return new ResponseEntity<>(accountService.signIn(userDto), httpHeaders, HttpStatus.OK);
-        } catch (EntityNotFoundException | BadCredentialsException e) {
+        } catch (UsernameNotFoundException | BadCredentialsException e) {
             return new ResponseEntity<>(Collections.singletonMap("error", e.getMessage()), httpHeaders, HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
             logger.error(e.toString());

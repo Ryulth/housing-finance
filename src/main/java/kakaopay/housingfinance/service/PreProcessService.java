@@ -46,8 +46,9 @@ public class PreProcessService {
 
             try {
                 FinanceStatusByYear originalElement = financeStatusByYears.stream()
-                        .filter(o -> o.equals(financeStatusByYear))
-                        .findFirst().orElseThrow(NoSuchElementException::new);
+                        .filter(o -> o.getYear().equals(financeStatusByYear.getYear()))
+                        .findFirst()
+                        .orElseThrow(NoSuchElementException::new);
                 originalElement.addTotalAmount(yearAmount);
                 originalElement.putDetailAmount(financeStatusByYear.getDetailAmount());
             } catch (NoSuchElementException e) {
