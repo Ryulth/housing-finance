@@ -20,31 +20,35 @@ public class CsvConverter implements FileConverter {
     private String filePath;
 
     @Override
-    public List<List<String>> fileConvert() {
-        return readCsvFile();
-    }
-
-    //TODO 리소스 해제 확인 요망
-    private List<List<String>> readCsvFile() {
-        ClassPathResource resource = new ClassPathResource(filePath);
+    public List<List<String>> convertFile() {
         List<List<String>> result = new ArrayList<>();
         CsvMapper mapper = new CsvMapper();
         mapper.enable(CsvParser.Feature.WRAP_AS_ARRAY);
 
         try {
-            File csvFile = new File(Paths.get(resource.getURI()).toString());
+            File csvFile = readCsvFile();
             MappingIterator<String[]> it = mapper.readerFor(String[].class).readValues(csvFile);
             while (it.hasNext()) {
                 String[] row = it.next();
-                List<String> rowList =Arrays.asList(row);
+                List<String> rowList = Arrays.asList(row);
                 rowList.removeIf(s -> s.equals(""));
                 result.add(rowList);
             }
+            return result;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
+    }
 
-        return result;
+    //TODO 리소스 해제 확인 요망
+    private File readCsvFile() throws IOException {
+        ClassPathResource resource = new ClassPathResource(filePath);
+        try {
+            return new File(Paths.get(resource.getURI()).toString());
+        } catch (IOException e) {
+            throw e;
+        }
     }
 
 }

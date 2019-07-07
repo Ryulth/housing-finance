@@ -24,10 +24,10 @@ public class DataController {
         this.dataService = dataService;
     }
 
-    @PutMapping("/file")
+    @PutMapping("/apis/file")
     public ResponseEntity<String> updateFile(
             @RequestBody String payload) {
-        System.out.println(payload);
+        dataService.saveFileToDatabase();
         return new ResponseEntity<>(payload, httpHeaders, HttpStatus.OK);
     }
 

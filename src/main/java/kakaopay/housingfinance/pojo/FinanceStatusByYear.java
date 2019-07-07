@@ -11,7 +11,7 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @ToString
-@EqualsAndHashCode(of = {"year"})
+@EqualsAndHashCode
 public class FinanceStatusByYear implements Comparable<FinanceStatusByYear>{
     private String year;
     @JsonProperty("total_amount")

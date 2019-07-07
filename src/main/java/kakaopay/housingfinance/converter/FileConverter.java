@@ -6,5 +6,5 @@ import java.util.List;
 
 @Service
 public interface FileConverter {
-    List<List<String>> fileConvert();
+    List<List<String>> convertFile();
 }

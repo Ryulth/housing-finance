@@ -58,7 +58,7 @@ public class HousingFinanceController {
     }
 
     @GetMapping("/apis/finances/minmax/year")
-    public ResponseEntity getMinMaxYearBank(
+    public ResponseEntity getMinMaxYearBankByName(
             @RequestParam(value = "name") String bankName
     ) {
         try {

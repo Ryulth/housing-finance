@@ -51,7 +51,7 @@ public class FinanceService {
         Bank bank = bankRepository.findById(bankId)
                 .orElseThrow(EntityNotFoundException::new);
 
-        Integer year = Integer.valueOf(keys[1]);
+        String year = keys[1];
 
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("year", year);
@@ -81,7 +81,7 @@ public class FinanceService {
     }
 
     private Map<String, Object> getSupportAmountMap(Map.Entry<String, Integer> entry) {
-        Integer year = Integer.valueOf(entry.getKey().split("/")[1]);
+        String year = entry.getKey().split("/")[1];
 
         Map<String, Object> supportAmountMap = new HashMap<>();
         supportAmountMap.put("year", year);
@@ -89,12 +89,12 @@ public class FinanceService {
         return supportAmountMap;
     }
 
-    public Map<String,Object> getPredictAmountByMonth(String bankName,Integer predictMonth){
+    public Map<String,Object> getPredictAmountByMonth(String bankName,int predictMonth){
         Bank bank = bankRepository.findByName(bankName)
                 .orElseThrow(EntityNotFoundException::new);
         List<BankFinance> bankFinances = bankFinanceRepository.findAllByBankId(bank.getId());
-        Integer predictYear = bankFinances.get(bankFinances.size() - 1).getYear() +1;
-        Integer predictAmount = predictFinance.predictFinanceAmount(bankFinances,predictYear,predictMonth);
+        int predictYear = bankFinances.get(bankFinances.size() - 1).getYear() +1;
+        int predictAmount = predictFinance.predictFinanceAmount(bankFinances,predictYear,predictMonth);
 
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("bank",bankName);
