@@ -21,7 +21,6 @@ public class CsvConverter implements FileConverter {
 
     @Override
     public List<List<String>> convertFile() {
-        System.out.println(filePath);
         List<List<String>> result = new ArrayList<>();
         CsvMapper mapper = new CsvMapper();
         mapper.enable(CsvParser.Feature.WRAP_AS_ARRAY);

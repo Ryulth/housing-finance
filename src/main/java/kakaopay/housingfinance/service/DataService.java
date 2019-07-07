@@ -28,11 +28,11 @@ public class DataService implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        ConvertFile();
+        saveFileToDatabase();
     }
 
     @Transactional
-    public void ConvertFile(){
+    public void saveFileToDatabase(){
         List<List<String>> rowData = fileConverter.convertFile();
         List<String> columnNames = rowData.remove(0);
         List<Bank> banks = objectConverter.bankListMapper(columnNames);
