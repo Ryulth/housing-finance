@@ -1,5 +1,7 @@
 package kakaopay.account.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import kakaopay.account.dto.UserDto;
 import kakaopay.account.service.AccountService;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import javax.persistence.EntityExistsException;
 import java.util.Collections;
 
 @RestController
+@Api(value = "AccountController")
 public class AccountController {
     private static Logger logger = LoggerFactory.getLogger(AccountController.class);
     private static final HttpHeaders httpHeaders = new HttpHeaders();
@@ -25,6 +28,7 @@ public class AccountController {
     }
 
     @PostMapping("/account/signup")
+    @ApiOperation(value="SingUP API", notes="회원가입을 하면 토큰을 반환하는 API.")
     public ResponseEntity signUp(
             @RequestBody UserDto userDto) {
         try {
@@ -39,6 +43,7 @@ public class AccountController {
     }
 
     @PostMapping("/account/signin")
+    @ApiOperation(value="SingIn API", notes="로그인을 하면 토큰을 반환하는 API.")
     public ResponseEntity signIn(
             @RequestBody UserDto userDto) {
         try {
@@ -52,8 +57,9 @@ public class AccountController {
         }
     }
 
-    @GetMapping("/account/refresh")
-    public ResponseEntity signIn(
+    @GetMapping("/account/update")
+    @ApiOperation(value="Update Access Token API", notes="refresh_token 을 보내면 access_token 을 반환해주는 API.")
+    public ResponseEntity updateAccessToken(
             @RequestHeader("Authorization") String token ) {
         try {
             return new ResponseEntity<>(accountService.updateAccessToken(token), httpHeaders, HttpStatus.OK);

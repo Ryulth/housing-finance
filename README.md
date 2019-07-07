@@ -86,9 +86,9 @@ POST /account/singin
 | 400  | Request 필드 부족      |
 | 401 | Username or Password 틀릴 경우 |
 
-#### 토큰 재발급 / refresh 
+#### 토큰 재발급 / update 
 
-GET /account/refresh
+GET /account/update
 
 * RequestHeader
 
