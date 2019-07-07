@@ -2,6 +2,7 @@
 
 > 주택 금융 서비스 API 개발
 
+### [API 테스트 페이지 바로가기](<http://hf.ryulth.com/swagger-ui.html>)
 
 ### 개요
 
@@ -86,9 +87,9 @@ POST /account/singin
 | 400  | Request 필드 부족      |
 | 401 | Username or Password 틀릴 경우 |
 
-#### 토큰 재발급 / refresh 
+#### 토큰 재발급 / update 
 
-GET /account/refresh
+GET /account/update
 
 * RequestHeader
 
@@ -354,6 +355,10 @@ user_id : bigint (PK / GeneratedValue)
 user_name : varchar (UK)
 user_password : varchar (Password encode)
 ```
+* `DelegatingPasswordEncoder`를 사용한 Password 암호화 결과 
+    * (username = "test",user_password = "1234) 
+    
+![image](https://user-images.githubusercontent.com/32893340/60775321-52385f00-a15c-11e9-9752-267bfd8c2ad3.png)
 
 ### 요구 사항 및 문제해결 전략
 
