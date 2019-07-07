@@ -37,7 +37,8 @@ public class DataServiceTest {
     @Before
     public void setUp() {
         ReflectionTestUtils.setField(csvConverter, "filePath", "housing-finance-data.csv");
-        when(fileConverter.convertFile()).thenReturn(csvConverter.convertFile());
+        when(fileConverter.convertFile())
+                .thenReturn(csvConverter.convertFile());
     }
 
     @Test
